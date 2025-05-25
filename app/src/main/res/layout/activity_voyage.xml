@@ -99,12 +99,13 @@
 
         <!-- Bouton validation -->
         <Button
-            android:id="@+id/btnStartVoyage"
+            android:id="@+id/btnCreerVoyage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="#2196F3"
+            android:onClick="CreerLancerVoyage"
             android:paddingVertical="12dp"
-            android:text="Créer et démarrer le voyage"
+            android:text="Créer et lancer le voyage"
             android:textColor="@android:color/white"
             android:textStyle="bold" />
     </LinearLayout>
