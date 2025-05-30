@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="24dp">
+
+    <!-- Titre -->
+    <TextView
+        android:id="@+id/titreSuivi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Suivi GPS"
+        android:textColor="#1A1A1A"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <!-- Chronomètre -->
+    <TextView
+        android:id="@+id/chronoText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Durée : 00:00"
+        android:textSize="16sp"
+        android:textColor="#333"
+        app:layout_constraintTop_toBottomOf="@id/titreSuivi"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="8dp"/>
+
+    <!-- Bouton Terminer -->
+    <Button
+        android:id="@+id/btnTerminer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Terminer le voyage"
+        android:backgroundTint="#F44336"
+        android:textColor="@android:color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Intervalle -->
+    <TextView
+        android:id="@+id/txtIntervalle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Intervalle GPS : --"
+        android:textColor="#555"
+        android:textSize="16sp"
+        app:layout_constraintTop_toBottomOf="@id/chronoText"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <!-- Bloc position GPS -->
+    <TextView
+        android:id="@+id/txtPosition"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="#F5F5F5"
+        android:padding="16dp"
+        android:text="Latitude: --\nLongitude: --\nHeure: --"
+        android:textColor="#000"
+        android:textSize="15sp"
+        app:layout_constraintTop_toBottomOf="@id/txtIntervalle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Capture manuelle (visible uniquement si mode manuel) -->
+    <Button
+        android:id="@+id/btnCaptureNow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:backgroundTint="#2196F3"
+        android:text="Enregistrer ma position"
+        android:textColor="@android:color/white"
+        app:layout_constraintTop_toBottomOf="@id/txtPosition"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,23 +1,46 @@
 package fr.upjv.carnet_de_voyage;
 
 public class Voyage {
+    public int getId() {
+        return id;
+    }
+
     private int id;
     private String titre;
     private String dateDebut;
     private String dateFin;
-    private String intervalle;
 
-    public Voyage(int id, String titre, String dateDebut, String dateFin, String intervalle) {
+    public void setTitre(String titre) {
+        this.titre = titre;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setDateDebut(String dateDebut) {
+        this.dateDebut = dateDebut;
+    }
+
+    public void setDateFin(String dateFin) {
+        this.dateFin = dateFin;
+    }
+
+
+
+
+
+    public Voyage(int id, String titre, String dateDebut, String dateFin) {
         this.id = id;
         this.titre = titre;
         this.dateDebut = dateDebut;
         this.dateFin = dateFin;
-        this.intervalle = intervalle;
+
     }
 
     public String getTitre() { return titre; }
     public String getDateDebut() { return dateDebut; }
     public String getDateFin() { return dateFin; }
-    public String getIntervalle() { return intervalle; }
+
 }
 
