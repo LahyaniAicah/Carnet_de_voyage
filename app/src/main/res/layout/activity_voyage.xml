@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <!-- Bouton retour (facultatif) -->
+        <!-- Bouton retour -->
         <TextView
             android:id="@+id/btnBack"
             android:layout_width="wrap_content"
@@ -20,7 +20,7 @@
             android:textColor="#4E5C6E"
             android:textSize="14sp" />
 
-        <!-- Titre -->
+        <!-- Titre principal -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -63,41 +63,75 @@
             android:hint="Décrivez votre voyage..."
             android:padding="12dp" />
 
-        <!-- Label slider -->
+        <!-- Choix du mode -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
-            android:text="🕒 Intervalle d'enregistrement GPS"
+            android:layout_marginBottom="8dp"
+            android:text="Mode d'enregistrement"
             android:textStyle="bold" />
 
-        <!-- SeekBar -->
-        <SeekBar
-            android:id="@+id/seekIntervalle"
+        <RadioGroup
+            android:id="@+id/radioGroupMode"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:max="8"
-        android:layout_marginBottom="4dp" />
+            android:orientation="horizontal"
+            android:layout_marginBottom="16dp">
 
-        <!-- Affichage valeur sélectionnée -->
-        <TextView
-            android:id="@+id/intervalleLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:text="1 minute"
-            android:textColor="#333333" />
+            <RadioButton
+                android:id="@+id/radioAuto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Automatique"
+                android:checked="true" />
 
-        <!-- Info aide -->
-        <TextView
+            <RadioButton
+                android:id="@+id/radioManuel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Manuel"
+                android:layout_marginStart="16dp" />
+        </RadioGroup>
+
+        <!-- Bloc du slider -->
+        <LinearLayout
+            android:id="@+id/sliderLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
-            android:text="L'application enregistrera automatiquement votre position GPS à cet intervalle pendant votre voyage."
-            android:textColor="#777777"
-            android:textSize="13sp" />
+            android:orientation="vertical">
 
-        <!-- Bouton validation -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:text="🕒 Intervalle d'enregistrement GPS"
+                android:textStyle="bold" />
+
+            <SeekBar
+                android:id="@+id/seekIntervalle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="8"
+                android:layout_marginBottom="4dp" />
+
+            <TextView
+                android:id="@+id/intervalleLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:text="1 minute"
+                android:textColor="#333333" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                android:text="L'application enregistrera automatiquement votre position GPS à cet intervalle pendant votre voyage."
+                android:textColor="#777777"
+                android:textSize="13sp" />
+        </LinearLayout>
+
+        <!-- Bouton de validation -->
         <Button
             android:id="@+id/btnCreerVoyage"
             android:layout_width="match_parent"

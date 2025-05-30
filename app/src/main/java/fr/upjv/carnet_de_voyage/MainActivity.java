@@ -41,14 +41,12 @@ public class MainActivity extends AppCompatActivity {
                 String titre = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_TITRE));
                 String debut = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_DATED));
                 String fin = cursor.getString(cursor.getColumnIndexOrThrow("date_fin"));
-                String intervalle = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_ENRGPS));
-
-                voyages.add(new Voyage(id, titre, debut, fin, intervalle));
+                voyages.add(new Voyage(id, titre, debut, fin));
             } while (cursor.moveToNext());
         }
         cursor.close();
 
-        VoyageAdapter adapter = new VoyageAdapter(voyages);
+        VoyageAdapter adapter = new VoyageAdapter(this,voyages);
         recyclerView.setAdapter(adapter);
     }
 
