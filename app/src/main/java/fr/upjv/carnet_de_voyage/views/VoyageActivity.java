@@ -1,35 +1,34 @@
-package fr.upjv.carnet_de_voyage;
+package fr.upjv.carnet_de_voyage.views;
 
-import android.content.ContentValues;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.RadioGroup;
-import android.widget.SeekBar;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.*;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import fr.upjv.carnet_de_voyage.R;
+import fr.upjv.carnet_de_voyage.controllers.VoyageController;
+import fr.upjv.carnet_de_voyage.models.Voyage;
 
 public class VoyageActivity extends AppCompatActivity {
 
     private String[] intervalles = {
             "30 sec", "1 min", "2 min", "5 min", "10 min", "15 min", "30 min", "1h", "2h"
     };
-
-    private int selectedMs = 30000; // valeur par défaut 30s
+    private int selectedMs = 30000;
+    private VoyageController controller;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_voyage);
+
+        controller = new VoyageController(); // instancier le contrôleur
+
         RadioGroup radioGroup = findViewById(R.id.radioGroupMode);
         LinearLayout sliderLayout = findViewById(R.id.sliderLayout);
 
-        // Afficher ou masquer le slider selon le mode sélectionné
         radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
             if (checkedId == R.id.radioManuel) {
                 sliderLayout.setVisibility(View.GONE);
@@ -47,8 +46,7 @@ public class VoyageActivity extends AppCompatActivity {
         intervalleLabel.setText(intervalles[0]);
 
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+            @Override public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 intervalleLabel.setText(intervalles[progress]);
                 selectedMs = convertirIntervalleEnMs(intervalles[progress]);
             }
@@ -57,54 +55,47 @@ public class VoyageActivity extends AppCompatActivity {
         });
     }
 
-    private String getCurrentDateTime() {
-        return new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss", java.util.Locale.getDefault())
-                .format(new java.util.Date());
-    }
-
-    private long enregistrerVoyage(String titre, String description, String intervalle) {
-        DatabaseHelper dbHelper = new DatabaseHelper(this);
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-
-        ContentValues values = new ContentValues();
-        values.put(DatabaseHelper.COL_TITRE, titre);
-        values.put(DatabaseHelper.COL_DESC, description);
-        values.put(DatabaseHelper.COL_DATED, getCurrentDateTime());
-        values.put(DatabaseHelper.COL_DATEF, (String) null);
-        values.put(DatabaseHelper.COL_ENRGPS, intervalle);
-
-        long newRowId = db.insert(DatabaseHelper.TABLE_VOYAGE, null, values);
-        db.close();
-
-        if (newRowId == -1) {
-            Toast.makeText(this, "Erreur lors de l'enregistrement", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(this, "Voyage enregistré avec succès", Toast.LENGTH_SHORT).show();
-        }
-        return newRowId;
-    }
-
     public void CreerLancerVoyage(View view) {
-        EditText titre = findViewById(R.id.inputTitre);
-        EditText description = findViewById(R.id.inputDescription);
+        EditText titreInput = findViewById(R.id.inputTitre);
+        EditText descriptionInput = findViewById(R.id.inputDescription);
         TextView intervalleGPS = findViewById(R.id.intervalleLabel);
 
-        String titreStr = titre.getText().toString().trim();
-        String descStr = description.getText().toString().trim();
-        String intervalleStr = intervalleGPS.getText().toString().trim();
+        String titre = titreInput.getText().toString().trim();
+        String desc = descriptionInput.getText().toString().trim();
+        String dateDebut = getCurrentDateTime(); // ou une date choisie
+        String dateFin = null; // voyage en cours
+        String intervalleStr = intervalleGPS.getText().toString();
 
-        if (!titreStr.isEmpty()) {
-            long idVoyage = enregistrerVoyage(titreStr, descStr, intervalleStr);
-            if (idVoyage != -1) {
+        if (!titre.isEmpty()) {
+            Voyage voyage = new Voyage(null, titre, dateDebut, dateFin);
+            controller.addVoyage(voyage, this, voyageId -> {
+                // ✅ Ici tu reçois le vrai ID généré par Firebase
+
                 Intent intent = new Intent(this, TrackingActivity.class);
-                intent.putExtra("voyage_id", (int) idVoyage);
+                intent.putExtra("voyage_id", voyageId); // important pour stopVoyage()
                 intent.putExtra("interval", selectedMs);
                 startActivity(intent);
                 finish();
-            }
+            });
+
+            controller.testerConnexionFirebase(this); // test instantané de connexion Firebase
+
+            Toast.makeText(this, "Voyage enregistré sur Firebase", Toast.LENGTH_SHORT).show();
+
+            // On lance l'activité de suivi
+            Intent intent = new Intent(this, TrackingActivity.class);
+            intent.putExtra("interval", selectedMs);
+            startActivity(intent);
+            finish();
+
         } else {
             Toast.makeText(this, "Veuillez entrer un titre", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private String getCurrentDateTime() {
+        return new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss", java.util.Locale.getDefault())
+                .format(new java.util.Date());
     }
 
     private int convertirIntervalleEnMs(String label) {

@@ -1,4 +1,4 @@
-package fr.upjv.carnet_de_voyage;
+package fr.upjv.carnet_de_voyage.views;
 
 import android.Manifest;
 import android.content.ContentValues;
@@ -26,6 +26,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import fr.upjv.carnet_de_voyage.R;
+import fr.upjv.carnet_de_voyage.controllers.VoyageController;
+import fr.upjv.carnet_de_voyage.models.Position;
+
 public class TrackingActivity extends AppCompatActivity {
 
     private FusedLocationProviderClient locationClient;
@@ -35,11 +39,13 @@ public class TrackingActivity extends AppCompatActivity {
     private int interval;
     private int voyageId;
     private long chronoStart;
-
     private TextView txtPosition;
     private TextView txtIntervalle;
     private TextView chronoText;
     private Button btnCapture;
+
+    private String voyageIdFirebase;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +60,7 @@ public class TrackingActivity extends AppCompatActivity {
         txtIntervalle = findViewById(R.id.txtIntervalle);
         chronoText = findViewById(R.id.chronoText);
         btnCapture = findViewById(R.id.btnCaptureNow);
+        voyageIdFirebase = getIntent().getStringExtra("voyage_id");
 
         txtIntervalle.setText("Intervalle GPS : " + (interval > 0 ? interval / 1000 + "s" : "manuel"));
 
@@ -77,9 +84,16 @@ public class TrackingActivity extends AppCompatActivity {
         startChrono();
 
         btnTerminer.setOnClickListener(v -> {
-            Intent intent = new Intent(this, MainActivity.class);
             stopTracking();
-            setDateFinVoyage();
+            // ✅ Mise à jour Firebase
+            VoyageController controller = new VoyageController();
+            controller.stopVoyage(voyageIdFirebase);
+
+            // ➕ Export GPX (facultatif ici)
+            // exportToGPX();
+
+            // ⤴️ Retour à l'accueil
+            Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
             finish();
         });
@@ -136,22 +150,17 @@ public class TrackingActivity extends AppCompatActivity {
     }
 
     private void saveToDatabase(Location location) {
-        DatabaseHelper dbHelper = new DatabaseHelper(this);
-        ContentValues values = new ContentValues();
-        values.put(DatabaseHelper.COL_LAT, location.getLatitude());
-        values.put(DatabaseHelper.COL_LON, location.getLongitude());
-        values.put(DatabaseHelper.COL_DATE, getCurrentDateTime());
-        values.put(DatabaseHelper.COL_VID, voyageId);
-        dbHelper.getWritableDatabase().insert(DatabaseHelper.TABLE_POSITION, null, values);
-        dbHelper.close();
-    }
+        VoyageController controller = new VoyageController();
+        String dateTime = getCurrentDateTime();
 
-    private void setDateFinVoyage() {
-        DatabaseHelper dbHelper = new DatabaseHelper(this);
-        ContentValues values = new ContentValues();
-        values.put(DatabaseHelper.COL_DATEF, getCurrentDateTime());
-        dbHelper.getWritableDatabase().update(DatabaseHelper.TABLE_VOYAGE, values, DatabaseHelper.COL_ID + "=?", new String[]{String.valueOf(voyageId)});
-        dbHelper.close();
+        Position position = new Position(
+                location.getLatitude(),
+                location.getLongitude(),
+                dateTime,
+                voyageIdFirebase // le string transmis dans l’intent
+        );
+        controller.addPosition(position);
+
     }
 
     private String getCurrentDateTime() {
@@ -162,41 +171,4 @@ public class TrackingActivity extends AppCompatActivity {
         return new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
     }
 
-    private void exportToGPX() {
-        try {
-            File gpxFile = new File(getExternalFilesDir(null), "voyage_" + voyageId + ".gpx");
-            FileWriter writer = new FileWriter(gpxFile);
-
-            writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
-            writer.write("<gpx version=\"1.1\" creator=\"CarnetDeVoyage\">\n");
-
-            DatabaseHelper dbHelper = new DatabaseHelper(this);
-            Cursor cursor = dbHelper.getReadableDatabase().rawQuery(
-                    "SELECT * FROM " + DatabaseHelper.TABLE_POSITION + " WHERE " + DatabaseHelper.COL_VID + "=?",
-                    new String[]{String.valueOf(voyageId)}
-            );
-
-            while (cursor.moveToNext()) {
-                double lat = cursor.getDouble(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_LAT));
-                double lon = cursor.getDouble(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_LON));
-                String time = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_DATE));
-                writer.write("<trkpt lat=\"" + lat + "\" lon=\"" + lon + "\"><time>" + time + "</time></trkpt>\n");
-            }
-            cursor.close();
-            writer.write("</gpx>");
-            writer.close();
-
-            Intent emailIntent = new Intent(Intent.ACTION_SEND);
-            emailIntent.setType("application/gpx+xml");
-            emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Fichier GPX Voyage");
-            emailIntent.putExtra(Intent.EXTRA_STREAM,
-                    FileProvider.getUriForFile(this, getPackageName() + ".provider", gpxFile));
-            emailIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            startActivity(Intent.createChooser(emailIntent, "Envoyer fichier GPX..."));
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            Toast.makeText(this, "Erreur export GPX", Toast.LENGTH_SHORT).show();
-        }
-    }
 }

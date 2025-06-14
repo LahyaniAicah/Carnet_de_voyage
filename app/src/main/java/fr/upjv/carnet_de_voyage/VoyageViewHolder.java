@@ -6,6 +6,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import fr.upjv.carnet_de_voyage.models.Voyage;
+
 public class VoyageViewHolder extends RecyclerView.ViewHolder {
     private final TextView titre, dates;
 

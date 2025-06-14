@@ -52,5 +52,15 @@
             android:backgroundTint="#4CAF50"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/btnAfficherCarte"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Afficher sur Google Map"
+            android:layout_marginTop="16dp"
+            android:backgroundTint="#2196F3"
+            android:textColor="@android:color/white"/>
+
     </LinearLayout>
 </ScrollView>
