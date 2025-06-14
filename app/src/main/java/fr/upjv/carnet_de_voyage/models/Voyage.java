@@ -6,9 +6,10 @@ public class Voyage {
     private String titre;
     private String dateDebut;
     private String dateFin;
+    private String user;
 
     // 🔹 Constructeur sans argument (obligatoire pour Firebase)
-    public Voyage() {
+    public Voyage() {// obligatoire pour Firestore
     }
 
     // 🔹 Constructeur principal
@@ -23,6 +24,7 @@ public class Voyage {
     public String getId() {
         return id;
     }
+
 
     public void setId(String id) {
         this.id = id;
@@ -50,5 +52,13 @@ public class Voyage {
 
     public void setDateFin(String dateFin) {
         this.dateFin = dateFin;
+    }
+
+    public String getUser() {
+        return user;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
     }
 }

@@ -19,6 +19,8 @@ public class VoyageActivity extends AppCompatActivity {
     private int selectedMs = 30000;
     private VoyageController controller;
 
+    String email = "Heva@gmail.com";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,7 +70,7 @@ public class VoyageActivity extends AppCompatActivity {
 
         if (!titre.isEmpty()) {
             Voyage voyage = new Voyage(null, titre, dateDebut, dateFin);
-            controller.addVoyage(voyage, this, voyageId -> {
+            controller.addVoyage(voyage, email, this, voyageId -> {
                 // ✅ Ici tu reçois le vrai ID généré par Firebase
 
                 Intent intent = new Intent(this, TrackingActivity.class);

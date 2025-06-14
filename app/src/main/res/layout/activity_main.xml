@@ -1,95 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="#F9FAFB"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
-    tools:context=".views.MainActivity">
+    android:padding="16dp">
 
-    <!-- Titre principal -->
+    <!-- Titre -->
     <TextView
         android:id="@+id/titleText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Carnet de Voyage"
-        android:textColor="#2E3A29"
-        android:textSize="24sp"
+        android:text="🌍 Carnet de Voyage"
+        android:textSize="26sp"
         android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:textColor="#1E293B"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
 
     <!-- Sous-titre -->
     <TextView
         android:id="@+id/subtitleText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:text="Enregistrez et partagez vos voyages"
-        android:textColor="#667066"
+        android:text="Enregistrez, visualisez et partagez vos trajets"
+        android:textColor="#64748B"
         android:textSize="14sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/titleText" />
+        app:layout_constraintTop_toBottomOf="@id/titleText"
+        app:layout_constraintStart_toStartOf="parent"/>
 
     <!-- Bouton Nouveau Voyage -->
+
+    <!-- Card Vos voyages -->
+
     <Button
         android:id="@+id/btnNewVoyage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="#2196F3"
-        android:paddingHorizontal="16dp"
-        android:paddingVertical="8dp"
-        android:text="+ Nouveau Voyage"
+        android:layout_width="115dp"
+        android:layout_height="50dp"
+        android:backgroundTint="#2563EB"
+        android:padding="12dp"
+        android:text="➕ Nouveau Voyage"
         android:textColor="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Carte encadrée : Vos voyages -->
     <androidx.cardview.widget.CardView
         android:id="@+id/voyageCard"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        app:cardBackgroundColor="@android:color/white"
-        app:cardCornerRadius="8dp"
-        app:cardElevation="2dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="4dp"
+        app:cardBackgroundColor="#FFFFFF"
         app:layout_constraintTop_toBottomOf="@id/subtitleText"
-        app:strokeColor="#E0E0E0"
-        app:strokeWidth="1dp">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="24dp">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="527dp"
             android:orientation="vertical"
-            android:padding="4dp">
-
-            <!-- Titre Vos voyages -->
+            android:padding="12dp">
 
             <TextView
-                android:id="@+id/voyagesTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="📍 Vos voyages"
-                android:textColor="#333333"
+                android:text="📍 Vos voyages enregistrés"
+                android:textColor="#1E293B"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerVoyages"
-                android:layout_width="329dp"
-                android:layout_height="508dp"
-                android:layout_marginTop="8dp"
-                android:clipToPadding="false"
-                android:paddingBottom="4dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/voyageCard" />
-
-
+                android:layout_width="match_parent"
+                android:layout_height="465dp"
+                android:paddingTop="8dp" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
+    <!-- Bouton Autres utilisateurs -->
+    <Button
+        android:id="@+id/btnVoirVoyagesUtilisateurs"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="44dp"
+        android:backgroundTint="#FB923C"
+        android:text="👥 Voir les voyages d'autres utilisateurs"
+        android:textColor="@android:color/white"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/voyageCard" />
 </androidx.constraintlayout.widget.ConstraintLayout>

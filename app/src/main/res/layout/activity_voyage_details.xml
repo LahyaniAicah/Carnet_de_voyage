@@ -1,66 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="24dp">
+    android:background="#F9FAFB"
+    android:padding="20dp">
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <!-- Retour -->
         <TextView
             android:id="@+id/btnBackDetail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingBottom="12dp"
             android:text="← Retour"
-            android:textColor="#4E5C6E"
-            android:textSize="14sp" />
+            android:textColor="#3B82F6"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:paddingBottom="12dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
+        <!-- Titre -->
         <TextView
             android:id="@+id/titreVoyageDetail"
-            android:text="Titre du Voyage"
+            android:text="Titre du voyage"
+            android:textColor="#1E293B"
+            android:textSize="22sp"
             android:textStyle="bold"
-            android:textSize="20sp"
             android:layout_marginBottom="8dp"
-            android:textColor="#1A1A1A"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
+        <!-- Dates -->
         <TextView
             android:id="@+id/dateVoyageDetail"
             android:text="Dates : --"
-            android:textSize="16sp"
-            android:layout_marginBottom="8dp"
+            android:textColor="#374151"
+            android:textSize="15sp"
+            android:layout_marginBottom="6dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
+        <!-- Description -->
         <TextView
             android:id="@+id/descVoyageDetail"
             android:text="Description : --"
+            android:textColor="#4B5563"
             android:textSize="15sp"
             android:layout_marginBottom="16dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
+        <!-- Bouton Export GPX -->
         <Button
             android:id="@+id/btnExporterGPX"
-            android:text="Exporter GPX et envoyer par mail"
-            android:textColor="@android:color/white"
-            android:backgroundTint="#4CAF50"
+            android:text="📤 Exporter GPX par mail"
+            android:textStyle="bold"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:backgroundTint="#10B981"
+            android:textColor="@android:color/white"
+            android:padding="12dp"
+            android:layout_marginBottom="12dp" />
 
+        <!-- Bouton Carte -->
         <Button
             android:id="@+id/btnAfficherCarte"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Afficher sur Google Map"
-            android:layout_marginTop="16dp"
-            android:backgroundTint="#2196F3"
-            android:textColor="@android:color/white"/>
-
+            android:text="🗺️ Afficher sur Google Map"
+            android:textStyle="bold"
+            android:backgroundTint="#3B82F6"
+            android:textColor="@android:color/white"
+            android:padding="12dp"
+            android:layout_marginBottom="24dp"/>
     </LinearLayout>
 </ScrollView>

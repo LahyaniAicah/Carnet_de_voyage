@@ -2,6 +2,7 @@ package fr.upjv.carnet_de_voyage.views;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -32,6 +33,9 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         setContentView(R.layout.activity_map);
 
         voyageId = getIntent().getStringExtra("voyage_id");
+
+        TextView btnBack = findViewById(R.id.btnBackMap);
+        btnBack.setOnClickListener(v -> finish());
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);

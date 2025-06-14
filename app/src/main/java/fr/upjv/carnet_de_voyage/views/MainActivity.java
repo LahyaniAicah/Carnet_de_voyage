@@ -36,6 +36,12 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
+        Button btnVoyagesUtilisateurs = findViewById(R.id.btnVoirVoyagesUtilisateurs);
+        btnVoyagesUtilisateurs.setOnClickListener(v -> {
+            Intent intent = new Intent(this, ListeUtilisateursActivity.class);
+            startActivity(intent);
+        });
+
         recyclerView = findViewById(R.id.recyclerVoyages);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         voyageList = new ArrayList<>();

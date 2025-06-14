@@ -24,7 +24,8 @@ public class VoyageController {
         db = FirebaseFirestore.getInstance();
     }
 
-    public void addVoyage(Voyage voyage, Context context, java.util.function.Consumer<String> onIdGenerated) {
+    public void addVoyage(Voyage voyage,String userEmail, Context context, java.util.function.Consumer<String> onIdGenerated) {
+        voyage.setUser(userEmail);
         db.collection("voyages")
                 .add(voyage)
                 .addOnSuccessListener(documentReference -> {
