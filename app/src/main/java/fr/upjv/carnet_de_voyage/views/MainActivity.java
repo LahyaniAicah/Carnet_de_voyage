@@ -42,9 +42,14 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
+        //afficher une liste d’éléments
         recyclerView = findViewById(R.id.recyclerVoyages);
+
+        // Afficher les éléments en colonne verticale (par défaut, comme une liste classique).
+        //LinearLayoutManager(this) gère ça.
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         voyageList = new ArrayList<>();
+        // crées un adapter personnalisé pour afficher les éléments
         adapter = new VoyageAdapter(this, voyageList);
         recyclerView.setAdapter(adapter);
 
@@ -55,14 +60,14 @@ public class MainActivity extends AppCompatActivity {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("voyages")
                 .get()
-                .addOnCompleteListener(task -> {
+                .addOnCompleteListener(task -> {//un écouteur qui sera appelé quand la requête est terminée
                     if (task.isSuccessful()) {
                         voyageList.clear(); // vide l'ancienne liste
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            Voyage voyage = document.toObject(Voyage.class);
+                        for (QueryDocumentSnapshot document : task.getResult()) { //Parcourir chaque document Firestore (chaque voyage)
+                            Voyage voyage = document.toObject(Voyage.class);//transforme automatiquement le document en objet Java Voyage
                             voyageList.add(voyage);
                         }
-                        adapter.notifyDataSetChanged();
+                        adapter.notifyDataSetChanged();//La liste a changé ! Mets à jour l’écran.
                     } else {
                         Log.e("Firebase", "Erreur de chargement : ", task.getException());
                     }

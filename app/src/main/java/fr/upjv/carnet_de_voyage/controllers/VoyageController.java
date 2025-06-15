@@ -34,7 +34,7 @@ public class VoyageController {
                     documentReference.update("id", docId);
 
                     Log.d("Firebase", "Voyage ajouté avec ID : " + docId);
-                    onIdGenerated.accept(docId); // 🔁 retourne l’ID au caller
+                    onIdGenerated.accept(docId); //  retourne l’ID au caller
                 })
                 .addOnFailureListener(e -> {
                     Log.e("Firebase", "Erreur ajout voyage", e);
@@ -72,10 +72,10 @@ public class VoyageController {
         db.collection("test_connexion")
                 .add(testData)
                 .addOnSuccessListener(documentReference ->
-                        Toast.makeText(context, "✅ Connexion Firebase OK", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, " Connexion Firebase OK", Toast.LENGTH_SHORT).show()
                 )
                 .addOnFailureListener(e ->
-                        Toast.makeText(context, "❌ Connexion Firebase échouée", Toast.LENGTH_LONG).show()
+                        Toast.makeText(context, " Connexion Firebase échouée", Toast.LENGTH_LONG).show()
                 );
     }
 

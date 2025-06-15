@@ -7,20 +7,22 @@ public class Voyage {
     private String dateDebut;
     private String dateFin;
     private String user;
+    private String description;
 
-    // 🔹 Constructeur sans argument (obligatoire pour Firebase)
+    // Constructeur sans argument (obligatoire pour Firebase)
     public Voyage() {// obligatoire pour Firestore
     }
 
-    // 🔹 Constructeur principal
-    public Voyage(String id, String titre, String dateDebut, String dateFin) {
+    // Constructeur principal
+    public Voyage(String id, String titre, String dateDebut, String dateFin , String description) {
         this.id = id;
         this.titre = titre;
         this.dateDebut = dateDebut;
         this.dateFin = dateFin;
+        this.description = description;
     }
 
-    // 🔹 Getters et setters
+    // Getters et setters
     public String getId() {
         return id;
     }
@@ -60,5 +62,13 @@ public class Voyage {
 
     public void setUser(String user) {
         this.user = user;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

@@ -117,17 +117,17 @@ public class VoyageDetailActivity extends AppCompatActivity {
                         if (emailIntent.resolveActivity(getPackageManager()) != null) {
                             startActivity(Intent.createChooser(emailIntent, "Envoyer GPX..."));
                         } else {
-                            Log.e("GPX", "❌ Aucune application disponible pour l'envoi");
+                            Log.e("GPX", " Aucune application disponible pour l'envoi");
                             Toast.makeText(this, "Aucune application disponible pour envoyer le fichier.", Toast.LENGTH_SHORT).show();
                         }
 
                     } catch (Exception e) {
-                        Log.e("GPX", "❌ Erreur lors de l'écriture du fichier GPX", e);
+                        Log.e("GPX", " Erreur lors de l'écriture du fichier GPX", e);
                         Toast.makeText(this, "Erreur GPX : " + e.getMessage(), Toast.LENGTH_LONG).show();
                     }
                 })
                 .addOnFailureListener(e -> {
-                    Log.e("GPX", "❌ Erreur lors de la récupération des positions Firebase", e);
+                    Log.e("GPX", " Erreur lors de la récupération des positions Firebase", e);
                     Toast.makeText(this, "Impossible de récupérer les positions", Toast.LENGTH_SHORT).show();
                 });
     }

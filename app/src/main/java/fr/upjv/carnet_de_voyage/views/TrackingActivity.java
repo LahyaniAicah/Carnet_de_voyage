@@ -31,7 +31,6 @@ public class TrackingActivity extends AppCompatActivity {
     private Runnable periodicTask;
     private Runnable chronoTask;
     private int interval;
-    private int voyageId;
     private long chronoStart;
     private TextView txtPosition;
     private TextView txtIntervalle;
@@ -40,15 +39,12 @@ public class TrackingActivity extends AppCompatActivity {
 
     private String voyageIdFirebase;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.tracking_activity);
 
-        voyageId = getIntent().getIntExtra("voyage_id", -1);
         interval = getIntent().getIntExtra("interval", 60000);
-
         locationClient = LocationServices.getFusedLocationProviderClient(this);
         txtPosition = findViewById(R.id.txtPosition);
         txtIntervalle = findViewById(R.id.txtIntervalle);
@@ -79,14 +75,11 @@ public class TrackingActivity extends AppCompatActivity {
 
         btnTerminer.setOnClickListener(v -> {
             stopTracking();
-            // ✅ Mise à jour Firebase
+            // Mise à jour Firebase
             VoyageController controller = new VoyageController();
             controller.stopVoyage(voyageIdFirebase);
 
-            // ➕ Export GPX (facultatif ici)
-            // exportToGPX();
-
-            // ⤴️ Retour à l'accueil
+            // Retour à l'accueil
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
             finish();

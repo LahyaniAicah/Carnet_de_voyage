@@ -33,7 +33,7 @@ public class VoyageActivity extends AppCompatActivity {
 
         radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
             if (checkedId == R.id.radioManuel) {
-                sliderLayout.setVisibility(View.GONE);
+                sliderLayout.setVisibility(View.GONE);//Si l’utilisateur coche Manuel → cacher le slider
                 selectedMs = -1;
             } else {
                 sliderLayout.setVisibility(View.VISIBLE);
@@ -43,15 +43,19 @@ public class VoyageActivity extends AppCompatActivity {
         TextView btnBack = findViewById(R.id.btnBack);
         btnBack.setOnClickListener(view -> finish());
 
+        //Configuration du SeekBar (curseur d’intervalle)
         SeekBar seekBar = findViewById(R.id.seekIntervalle);
         TextView intervalleLabel = findViewById(R.id.intervalleLabel);
-        intervalleLabel.setText(intervalles[0]);
+        intervalleLabel.setText(intervalles[0]);//Affiche le premier intervalle ("30 sec") par défaut.
 
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                intervalleLabel.setText(intervalles[progress]);
-                selectedMs = convertirIntervalleEnMs(intervalles[progress]);
+                //À chaque déplacement du curseur :
+                intervalleLabel.setText(intervalles[progress]);//met à jour le texte (1 min, 2h, etc.)
+                selectedMs = convertirIntervalleEnMs(intervalles[progress]);//met à jour la valeur selectedMs en millisecondes
             }
+
+            // obligatoires lorsque tu implémentes un OnSeekBarChangeListener
             @Override public void onStartTrackingTouch(SeekBar seekBar) {}
             @Override public void onStopTrackingTouch(SeekBar seekBar) {}
         });
@@ -60,19 +64,14 @@ public class VoyageActivity extends AppCompatActivity {
     public void CreerLancerVoyage(View view) {
         EditText titreInput = findViewById(R.id.inputTitre);
         EditText descriptionInput = findViewById(R.id.inputDescription);
-        TextView intervalleGPS = findViewById(R.id.intervalleLabel);
-
         String titre = titreInput.getText().toString().trim();
         String desc = descriptionInput.getText().toString().trim();
         String dateDebut = getCurrentDateTime(); // ou une date choisie
         String dateFin = null; // voyage en cours
-        String intervalleStr = intervalleGPS.getText().toString();
 
         if (!titre.isEmpty()) {
-            Voyage voyage = new Voyage(null, titre, dateDebut, dateFin);
-            controller.addVoyage(voyage, email, this, voyageId -> {
-                // ✅ Ici tu reçois le vrai ID généré par Firebase
-
+            Voyage voyage = new Voyage(null, titre, dateDebut, dateFin , desc);
+            controller.addVoyage(voyage, email, this, voyageId -> { // Firebase retourne l'ID
                 Intent intent = new Intent(this, TrackingActivity.class);
                 intent.putExtra("voyage_id", voyageId); // important pour stopVoyage()
                 intent.putExtra("interval", selectedMs);
@@ -81,14 +80,8 @@ public class VoyageActivity extends AppCompatActivity {
             });
 
             controller.testerConnexionFirebase(this); // test instantané de connexion Firebase
-
             Toast.makeText(this, "Voyage enregistré sur Firebase", Toast.LENGTH_SHORT).show();
 
-            // On lance l'activité de suivi
-            Intent intent = new Intent(this, TrackingActivity.class);
-            intent.putExtra("interval", selectedMs);
-            startActivity(intent);
-            finish();
 
         } else {
             Toast.makeText(this, "Veuillez entrer un titre", Toast.LENGTH_SHORT).show();
